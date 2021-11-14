@@ -1,4 +1,4 @@
-#PR-DEPLOY
+# PR-DEPLOY
 
 Our broad idea was to automatically host a static website on a webserver when a pull request is created. So for example, if on the repo 'my-dog-website' a pull request is created, a comment will be added to the pull request specifying the link of where the app is deployed. Example - **my-dog-website.prdeploy.xyz**.
 
