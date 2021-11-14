@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import subprocess
 
 import jwt
 import requests
@@ -12,6 +13,7 @@ app = Flask(__name__)
 
 GITHUB_API_DOMAIN = 'https://api.github.com'
 ACCESS_TOKEN_ENDPOINT = '/app/installations/{}/access_tokens'
+DOMAIN_NAME = '.prdeploy.xyz'
 
 @app.route("/", methods = ['POST', 'GET'])
 def pull_request_webhook_handler():
@@ -19,8 +21,11 @@ def pull_request_webhook_handler():
     payload = request.json
     if payload['action'] in ['opened', 'reopened']:
 
-        # repo_clone_url = payload['pull_request']['head']['repo']['clone_url']
-        # branch_name = payload['pull_request']['head']['ref']
+        repo_name = payload['repository']['name'].lower()
+        repo_clone_url = payload['pull_request']['head']['repo']['clone_url']
+        branch_name = payload['pull_request']['head']['ref']
+
+        subprocess.call(['bash', 'start.sh', repo_name, repo_clone_url, branch_name])
 
         post_webapp_link_as_comment(payload)
 
@@ -29,7 +34,7 @@ def pull_request_webhook_handler():
 def post_webapp_link_as_comment(payload):
     """Posts the link of the deployed website as a comment in the pull request"""
     request_url = payload['pull_request']['issue_url'] + '/comments'
-    body = 'This is my comment'
+    body = payload['repository']['name'].lower() + DOMAIN_NAME
     access_token = get_access_token(payload)
     headers = {"Authorization": "token {}".format(access_token),
                "Accept": "application/vnd.github.v3+json"}
