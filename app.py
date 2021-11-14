@@ -24,6 +24,7 @@ def pull_request_webhook_handler():
 
         post_webapp_link_as_comment(payload)
 
+    return "comment has been added"
 
 def post_webapp_link_as_comment(payload):
     """Posts the link of the deployed website as a comment in the pull request"""
@@ -32,7 +33,9 @@ def post_webapp_link_as_comment(payload):
     access_token = get_access_token(payload)
     headers = {"Authorization": "token {}".format(access_token),
                "Accept": "application/vnd.github.v3+json"}
-    response = requests.post(request_url, json={'body': body}, headers=headers)
+    requests.post(request_url, json={'body': body}, headers=headers)
+
+    return
 
 
 def get_access_token(payload):
