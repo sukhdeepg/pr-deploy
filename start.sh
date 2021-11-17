@@ -17,6 +17,10 @@ source "$PROJECT_NAME-$BRANCH_NAME-env"/bin/activate
 
 pip install -r requirements.txt
 
+<<<<<<< HEAD
+=======
+# this can be replaced depending on what framework we are working on
+>>>>>>> 6dedbd7c143007adb62a65195b3a441fe24c1081
 mkdocs build
 
 cd site
